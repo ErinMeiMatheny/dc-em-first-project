@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <head>
+
+<head>
     <title>Vending Machines</title>
 
     <style>
@@ -9,10 +10,12 @@
             font-size: 25px;
             border: 4px dotted lightgreen;
         }
-        form{
-        background-color:#befc03 ;
+
+        form {
+            background-color: #befc03;
         }
-        #vendingImg{
+
+        #vendingImg {
             display: block;
             margin-left: auto;
             margin-right: auto;
@@ -20,54 +23,122 @@
             margin-bottom: 20px;
         }
 
-        h1{
+        h1 {
             background-color: #befc03;
-            border-style:dotted;
+            border-style: dotted;
             text-align: center;
-            
+
         }
-        body{
+
+        body {
             background-image: url(https://images-na.ssl-images-amazon.com/images/I/81NuqO0jf8L._SX522_.jpg);
         }
-        input{
+
+        input {
             width: 50%;
             box-sizing: border-box;
-            background-color:#42f5f5;
+            background-color: #42f5f5;
             margin-top: 10px;
         }
     </style>
-    </head>
-    <h1>This is a vending machine. NO PRETZELS. Lots of gummies.</h1>
-    <body>
-        <div id='vendingImg'>
-        <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS96eCEA3PlDPOIUnd7mZImpVhMSeNGA_ASvToONuRC-JdbO1nV&usqp=CAU' style="display: block; margin-left: auto; margin-right: auto;"">
+
+</head>
+<h1>This is a vending machine. NO PRETZELS. Lots of gummies.</h1>
+
+<body>
+    <div id='vendingImg'>
+        <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS96eCEA3PlDPOIUnd7mZImpVhMSeNGA_ASvToONuRC-JdbO1nV&usqp=CAU'
+            style="display: block; margin-left: auto; margin-right: auto;">
         </div>
     </body>
     <form>
         <div>
             <label>Money</label>
-            <input type='number'/>
-        </div>
-        <br>
-        <div>
-            <label>Snack Options</label>
-            <select>
-                <option>Sour worms</option>
-                <option>Gushers</option>
-                <option>Hot cheetos</option>
-                <option>Takis</option>
-                <option>Sour brite crawlers</option>
-                <option>Butterfingers</option>
-                <option>Tape</option>
-            </select>
-        </div>
-        <br>
-        <div>
-            <input type='button' value='get your snack'>
-        </div>
-        <br>
-        <div>
-            <input type='button' value='get change'>
-        </div>
+            <input type='number' id='moneyEntered' />
+    </div>
+    <br>
+    <div>
+        <label>Snack Options</label>
+        <select>
+            <option>Sour worms</option>
+            <option>Gushers</option>
+            <option>Hot cheetos</option>
+            <option>Takis</option>
+            <option>Sour brite crawlers</option>
+            <option>Butterfingers</option>
+            <option>Tape</option>
+        </select>
+    </div>
+    <br>
+    <div>
+        <input type='button' value='submit' onclick="enterMoney(document.getElementById('moneyEntered').value)">
+    </div>
+    <br>
+    <div>
+        <input type='button' value='get change'>
+    </div>
     </form>
+    <div>
+        <div id="right-side">
+
+            <p id="money" value="number" step=".01">0</p>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var money = parseFloat(document.getElementById("money").innerHTML);
+        console.log(money)
+        console.log(typeof(money))
+        var totalTendered = 0;
+        var items = {
+            SourWorms: 1.00,
+            Gusher: 1.50,
+            HotCheetos: 1.25,
+            Takis: 1.00,
+            SourBriteCrawlers: 1.50,
+            Butterfingers: 1.00,
+            Tape:1.00,
+        };
+        //Bag of items
+        var bag = [];
+        var getItems = function () {
+            return items;
+        }
+        function enterMoney(amount) {
+            console.log("we have this much money!", money)
+            if (isNaN(amount) == false) {
+                console.log(amount)
+                console.log(typeof(amount))
+                totalTendered += parseFloat(amount);
+                document.getElementById("money").innerHTML = totalTendered;
+                console.log(document.getElementById('moneyEntered').value)
+            } else {
+                console.log("You entered the wrong amount");
+            }
+        }
+        function makeSelection(selection) {
+            if (!items[selection]) {
+                console.log("No Item Exist");
+            } else {
+                var item_price = items[selection];
+                if (item_price <= totalTendered) {
+                    totalTendered = totalTendered - item_price;
+                    return selection;
+                } else {
+                    console.log("Not enough money to buy " + selection);
+                }
+            }
+        }
+        function getChange() {
+            if (!totalTendered) {
+                console.log("There is no money to return");
+            }
+            var amountToReturn = totalTendered;
+            //remove all the money
+            totalTendered = 0;
+            return amountToReturn;
+        }
+    </script>
+
 </html>
